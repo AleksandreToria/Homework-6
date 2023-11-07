@@ -1,7 +1,6 @@
 package com.example.homework6
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,10 +31,15 @@ class MainActivity : AppCompatActivity() {
         binding.addBtn.setOnClickListener {
             binding.status.text = ""
 
+            if (areElementsNullOrBlank(info)) {
+                Toast.makeText(this, "Please don't leave fields empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             val firstName = info[0].text.toString()
             val lastName = info[1].text.toString()
             val email = info[2].text.toString()
-            val ageText = info[3].text.toString()
+            val age= info[3].text.toString().toInt()
 
             if (!isEmailValid(email)) {
                 Toast.makeText(this, "Please enter valid email", Toast.LENGTH_SHORT).show()
@@ -48,11 +52,6 @@ class MainActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val age = if (ageText.isNotEmpty()) {
-                ageText.toInt()
-            }else {
-                0
-            }
 
             val userInformation = UserInformation(firstName, lastName, email, age)
             users.addUser(userInformation)
@@ -145,7 +144,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun areElemenetsNullOrBlank(inputs: Array<AppCompatEditText>): Boolean {
+    private fun areElementsNullOrBlank(inputs: Array<AppCompatEditText>): Boolean {
         return inputs.any { input -> input.text.isNullOrBlank() }
     }
 
